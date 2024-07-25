@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "ProfitPilot",
+    "slug": "profitpilot",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/splash.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#FFFFFF"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/splash.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.bytebeem.App"
+    },
+    "web": {
+      "favicon": "./assets/splash.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6a271932-7efe-4964-b5ea-7ee67ba7fd75"
+      }
+    },
+    "plugins": [
+      "expo-secure-store"
+    ],
+    "owner": "bytebeem21"
+  }
+}
