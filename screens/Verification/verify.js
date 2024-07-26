@@ -1,10 +1,11 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback,useContext, useEffect, useRef } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ActivityIndicator } from "react-native";
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import ErrorModal from '../../components/ErrorModal';
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
+import { URLContext } from '../../App';
 
 export default function Verify() {
     const route = useRoute();
@@ -16,6 +17,8 @@ export default function Verify() {
     const [form, setForm] = useState({ code: '' });
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     const inputs = useRef([]);
+    const apiUrl = useContext(URLContext);
+    
 
     useEffect(() => {
         setIsButtonDisabled(form.code.length !== 5);
@@ -29,7 +32,7 @@ export default function Verify() {
     const handleSubmit = useCallback(async () => {
         setIsLoading(true);
         try {
-            const response = await axios.post("https://profitpilot.ddns.net/auth/confirm-otp", {
+            const response = await axios.post(`${apiUrl}/auth/confirm-otp`, {
                 email,
                 code: form.code,
                 type,

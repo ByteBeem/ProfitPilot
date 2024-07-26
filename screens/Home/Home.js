@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useContext ,useCallback } from 'react';
 import { View, SafeAreaView, Image, Text, TextInput, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import * as SecureStore from 'expo-secure-store';
@@ -6,6 +6,7 @@ import { Picker } from "@react-native-picker/picker";
 import axios from 'axios';
 import ErrorModal from '../../components/ErrorModal';
 import DisclaimerModal from "../../components/Disclaimer";
+import { URLContext } from '../../App';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = ({ navigation }) => {
@@ -24,13 +25,15 @@ const Home = ({ navigation }) => {
     const [error, setError] = useState(null);
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [brokerServers, setBrokerServers] = useState({});
+    const apiUrl = useContext(URLContext);
+    
     
 
     // Fetch broker servers
     const fetchBrokerServers = useCallback(async () => {
         setIsLoading(true);
         try {
-            const response = await fetch('https://profitpilot.ddns.net/trading/broker-servers');
+            const response = await fetch(`${apiUrl}/trading/broker-servers`);
             if (!response.ok) throw new Error('Network response was not ok');
             const data = await response.json();
             setBrokerServers(data);
@@ -100,7 +103,7 @@ const Home = ({ navigation }) => {
                 await StopTrading();
             } else {
                 setTradingStatus("Starting, please wait...");
-                const response = await axios.post("https://profitpilot.ddns.net/trading/Start-trading", {
+                const response = await axios.post(`${apiUrl}/trading/Start-trading`, {
                     token,
                     login: account,
                     selectedBroker,
@@ -128,7 +131,7 @@ const Home = ({ navigation }) => {
         setIsLoading(true);
         const token = await SecureStore.getItemAsync('token');
         try {
-            const response = await axios.post("https://profitpilot.ddns.net/trading/Stop-trading", { token });
+            const response = await axios.post(`${apiUrl}/trading/Stop-trading`, { token });
             if (response.status === 200) {
                 setError("Trading has stopped");
                 setTrading(false);
@@ -147,7 +150,7 @@ const Home = ({ navigation }) => {
         setIsLoading(true);
         const token = await SecureStore.getItemAsync('token');
         try {
-            const response = await axios.post("https://profitpilot.ddns.net/subscriptions/check-subscription", { token });
+            const response = await axios.post(`${apiUrl}/subscriptions/check-subscription`, { token });
             if (response.status === 200) {
                 await handleSubmit();
             }

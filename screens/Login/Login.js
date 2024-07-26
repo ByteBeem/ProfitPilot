@@ -1,12 +1,13 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import React, { useState, useCallback,useContext, useEffect, useMemo } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ActivityIndicator } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import ErrorModal from '../../components/ErrorModal'; 
+import { URLContext } from '../../App';
 
-const API_URL = "https://profitpilot.ddns.net/auth/login"; 
+ 
 
 const Login = () => {
     const navigation = useNavigation();
@@ -17,6 +18,8 @@ const Login = () => {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [error, setError] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
+    const apiUrl = useContext(URLContext);
+
 
     const isButtonDisabled = useMemo(() => {
         return !!emailError || !!passwordStrengthError || !form.email || !form.password;
@@ -53,7 +56,7 @@ const Login = () => {
     const handleSubmit = useCallback(async () => {
         setIsLoading(true);
         try {
-            const { data, status } = await axios.post(API_URL, form);
+            const { data, status } = await axios.post(`${apiUrl}/auth/login`, form);
             if (status === 200) {
                 await SecureStore.setItemAsync('token', data.token);
                 navigation.navigate('Home');

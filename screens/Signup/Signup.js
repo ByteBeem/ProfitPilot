@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect,useContext, useCallback } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, Image, TextInput, ActivityIndicator,ScrollView ,Platform, KeyboardAvoidingView,TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import axios from 'axios';
+import { URLContext } from '../../App';
 
 const Signup = () => {
     const navigation = useNavigation();
@@ -19,6 +20,7 @@ const Signup = () => {
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const apiUrl = useContext(URLContext);
 
     useEffect(() => {
         setIsButtonDisabled(
@@ -96,7 +98,7 @@ const Signup = () => {
         setIsLoading(true);
         setIsButtonDisabled(true);
         try {
-            const response = await axios.post("https://profitpilot.ddns.net/auth/signup", {
+            const response = await axios.post(`${apiUrl}/auth/signup`, {
                 email: form.email,
                 password: form.password,
                 username:form.username

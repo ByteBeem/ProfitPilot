@@ -1,10 +1,12 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState,useContext , useCallback } from 'react';
 import { View, Text, Button, StyleSheet, ActivityIndicator, TouchableOpacity, Image } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import ErrorModal from '../../components/ErrorModal';
+import { URLContext } from '../../App';
+
 
 const forexPairs = [
   { label: 'EUR/USD', value: 'EUR/USD' },
@@ -21,6 +23,8 @@ const Signals = ({ navigation }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const apiUrl = useContext(URLContext);
+ 
 
   const handleCloseError = () => {
     setIsOpen(false);
@@ -28,8 +32,9 @@ const Signals = ({ navigation }) => {
   };
 
   const fetchSignal = useCallback(async (token, pair) => {
+    
     try {
-      const { data, status } = await axios.post('https://profitpilot.ddns.net/trading/signals', {
+      const { data, status } = await axios.post(`${apiUrl}/trading/signals`, {
         token,
         pair,
       });
@@ -50,7 +55,7 @@ const Signals = ({ navigation }) => {
 
     const token = await SecureStore.getItemAsync('token');
     try {
-      const { status } = await axios.post('https://profitpilot.ddns.net/subscriptions/check-subscription', { token });
+      const { status } = await axios.post(`${apiUrl}/subscriptions/check-subscription`, { token });
 
       if (status === 200) {
         await fetchSignal(token, selectedPair);

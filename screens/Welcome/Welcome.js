@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect ,useState, useCallback } from 'react';
 import { View, Text, Alert, Linking } from 'react-native';
 import PageContainer from '../../components/PageContainer';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -10,10 +10,12 @@ import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
 
+
 const Walkthrough = () => {
     const [appVersion, setAppVersion] = useState(null);
     const [checkingUpdate, setCheckingUpdate] = useState(true);
     const navigation = useNavigation();
+   
 
     const fetchAppVersion = useCallback(async () => {
         try {
@@ -39,7 +41,7 @@ const Walkthrough = () => {
                 );
             }
         } catch (error) {
-            console.error("Error checking for updates:", error);
+            
         } finally {
             setCheckingUpdate(false);
         }
@@ -58,7 +60,7 @@ const Walkthrough = () => {
                 navigation.navigate('Login');
             }
         } catch (error) {
-            console.error("Error checking token:", error);
+            
         }
     };
 
@@ -101,7 +103,7 @@ const Walkthrough = () => {
                             marginHorizontal: SIZES.padding * 0.8,
                         }}
                     >
-                        AI will fly your account to higher profits 
+                       Your Path to Financial Freedom 
                     </Text>
 
                     <View style={{ width: '100%', alignItems: 'center' }}>

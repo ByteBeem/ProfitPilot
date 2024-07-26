@@ -29,12 +29,12 @@
     },
     "extra": {
       "eas": {
-        "projectId": "6a271932-7efe-4964-b5ea-7ee67ba7fd75"
+        "projectId": "e5540f47-257d-4d03-ae6e-1cb02d6b5e8c"
       }
     },
     "plugins": [
       "expo-secure-store"
     ],
-    "owner": "bytebeem21"
+    "owner": "bytebeem"
   }
 }

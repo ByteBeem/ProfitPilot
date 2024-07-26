@@ -1,15 +1,17 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useContext , useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import LottieView from "lottie-react-native";
 import { SIZES } from '../../constants';
+import { URLContext } from '../../App';
 
 const Profile = ({ navigation }) => {
     const [isLoggingOut, setIsLoggingOut] = useState(false);
     const [userData, setUserData] = useState({});
     const [isLoading, setIsLoading] = useState(false);
+    const apiUrl = useContext(URLContext);
 
     const handleLogOut = useCallback(async () => {
         setIsLoggingOut(true);
@@ -29,7 +31,7 @@ const Profile = ({ navigation }) => {
 
         setIsLoading(true);
         try {
-            const response = await axios.post('https://profitpilot.ddns.net/users/profile', { token });
+            const response = await axios.post(`${apiUrl}/users/profile`, { token });
 
             if (response.status === 200) {
                 setUserData(response.data);
@@ -68,14 +70,7 @@ const Profile = ({ navigation }) => {
                 For any enquiries, email: <Text style={styles.label}>forex929@proton.me</Text>
             </Text>
 
-            <View style={styles.animationContainer}>
-                <LottieView
-                    source={require("../../assets/animation.json")}
-                    autoPlay
-                    loop
-                    style={styles.animation}
-                />
-            </View>
+           
 
             <View style={styles.navigation}>
                 <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Home')}>

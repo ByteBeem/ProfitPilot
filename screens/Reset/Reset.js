@@ -1,10 +1,9 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback,useContext, useEffect } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import axios from 'axios';
-
-const API_URL = "https://profitpilot.ddns.net/auth/reset";
+import { URLContext } from '../../App';
 
 export default function Reset() {
     const navigation = useNavigation();
@@ -12,6 +11,7 @@ export default function Reset() {
     const [emailError, setEmailError] = useState('');
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
+    const apiUrl = useContext(URLContext);
 
     useEffect(() => {
         setIsButtonDisabled(!form.email || emailError.length > 0);
@@ -35,7 +35,7 @@ export default function Reset() {
     const handleSubmit = useCallback(async () => {
         setIsLoading(true);
         try {
-            const { status } = await axios.post(API_URL, { email: form.email });
+            const { status } = await axios.post(`${apiUrl}/auth/reset`, { email: form.email });
             if (status === 200) {
                 navigation.navigate('Verify', { email: form.email, type: 'reset' });
             }

@@ -1,9 +1,10 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useContext,useEffect } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import ErrorModal from '../../components/ErrorModal';
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
+import { URLContext } from '../../App';
 
 const ChangePassword = () => {
     const route = useRoute();
@@ -15,6 +16,7 @@ const ChangePassword = () => {
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     const [passwordError, setPasswordError] = useState('');
     const [retypePasswordError, setRetypePasswordError] = useState('');
+    const apiUrl = useContext(URLContext);
 
     const navigation = useNavigation();
 
@@ -42,7 +44,7 @@ const ChangePassword = () => {
     const handleSubmit = useCallback(async () => {
         setIsLoading(true);
         try {
-            const response = await axios.post("https://profitpilot.ddns.net/auth/changePassword", {
+            const response = await axios.post(`${apiUrl}/auth/changePassword`, {
                 email,
                 serverToken,
                 newPassword: form.password,

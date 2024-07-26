@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useContext,useCallback } from 'react';
 import {
     View,
     SafeAreaView,
@@ -15,6 +15,7 @@ import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import * as Location from 'expo-location';
 import ErrorModal from '../../components/ErrorModal';
+import { URLContext } from '../../App';
 
 const Subscriptions = ({ navigation }) => {
     const [loadingStates, setLoadingStates] = useState({
@@ -26,6 +27,7 @@ const Subscriptions = ({ navigation }) => {
     const [plans, setPlans] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+    const apiUrl = useContext(URLContext);
 
     const [isOpen, setIsOpen] = useState(false);
     const [error, setError] = useState(null);
@@ -46,7 +48,7 @@ const Subscriptions = ({ navigation }) => {
         const token = await SecureStore.getItemAsync('token');
 
         try {
-            const response = await axios.post('https://profitpilot.ddns.net/subscriptions/plans', { token });
+            const response = await axios.post(`${apiUrl}/subscriptions/plans`, { token });
             if (response.status === 200) {
                 let fetchedPlans = response.data.plans;
                 if (countryCode !== 'ZA') {
@@ -98,7 +100,7 @@ const Subscriptions = ({ navigation }) => {
 
             try {
                 const response = await axios.post(
-                    'https://profitpilot.ddns.net/subscriptions/create-payment',
+                    `${apiUrl}/subscriptions/create-payment`,
                     { planId, token, location }
                 );
 
